@@ -4,6 +4,8 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
 // Middleware
@@ -14,12 +16,15 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// Test Route
+// Home Route
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Enterprise CRM API is running successfully!"
+    message: "Enterprise CRM API Running Successfully"
   });
 });
+
+// Authentication Routes
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
