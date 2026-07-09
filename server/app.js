@@ -5,7 +5,10 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/authRoutes");
-
+const leadRoutes = require("./routes/leadRoutes");
+const customerRoutes = require("./routes/customerRoutes");
+const dealRoutes = require("./routes/dealRoutes");
+const activityRoutes = require("./routes/activityRoutes");
 const app = express();
 
 // Middleware
@@ -15,7 +18,10 @@ app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 app.use(morgan("dev"));
-
+app.use("/api/leads", leadRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/deals", dealRoutes);
+app.use("/api/activities", activityRoutes);
 // Home Route
 app.get("/", (req, res) => {
   res.json({
