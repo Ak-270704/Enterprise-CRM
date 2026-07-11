@@ -1,25 +1,76 @@
-import { Link } from "react-router-dom";
+import {
+  FaTachometerAlt,
+  FaUserFriends,
+  FaUsers,
+  FaHandshake,
+  FaTasks,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
-const Sidebar = () => {
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-    return (
+export default function Sidebar() {
 
-        <aside className="sidebar">
+  const { logout } = useAuth();
 
-            <Link to="/">Dashboard</Link>
+  return (
 
-            <Link to="/leads">Leads</Link>
+    <div
+      style={{
+        width:"250px",
+        background:"#1e293b",
+        color:"white",
+        minHeight:"100vh",
+        padding:"20px"
+      }}
+    >
 
-            <Link to="/customers">Customers</Link>
+      <h2
+        style={{
+          marginBottom:"30px",
+          textAlign:"center"
+        }}
+      >
+        Enterprise CRM
+      </h2>
 
-            <Link to="/deals">Deals</Link>
+      <NavLink to="/" className="menu-item">
+        <FaTachometerAlt /> Dashboard
+      </NavLink>
 
-            <Link to="/activities">Activities</Link>
+      <NavLink to="/leads" className="menu-item">
+        <FaUserFriends /> Leads
+      </NavLink>
 
-        </aside>
+      <NavLink to="/customers" className="menu-item">
+        <FaUsers /> Customers
+      </NavLink>
 
-    );
+      <NavLink to="/deals" className="menu-item">
+        <FaHandshake /> Deals
+      </NavLink>
 
-};
+      <NavLink to="/activities" className="menu-item">
+        <FaTasks /> Activities
+      </NavLink>
 
-export default Sidebar;
+      <button
+        onClick={logout}
+        style={{
+          marginTop:"40px",
+          width:"100%",
+          padding:"10px",
+          border:"none",
+          borderRadius:"6px",
+          cursor:"pointer"
+        }}
+      >
+        <FaSignOutAlt /> Logout
+      </button>
+
+    </div>
+
+  );
+
+}

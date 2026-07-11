@@ -1,33 +1,30 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
-const Layout = ({ children }) => {
+import "../styles/dashboard.css";
 
-    return (
+export default function Layout({children}){
 
-        <>
+return(
 
-            <Navbar />
+<div className="dashboard">
 
-            <div style={{display:"flex"}}>
+<Sidebar/>
 
-                <Sidebar />
+<div className="main-content">
 
-                <main
-                    style={{
-                        flex:1,
-                        padding:"20px"
-                    }}
-                >
-                    {children}
-                </main>
+<Navbar/>
 
-            </div>
+<div className="content">
 
-        </>
+{children}
 
-    );
+</div>
 
-};
+</div>
 
-export default Layout;
+</div>
+
+)
+
+}
