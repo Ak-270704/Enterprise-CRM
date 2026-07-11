@@ -3,8 +3,10 @@ const Lead = require("../models/Lead");
 // Create Lead
 exports.createLead = async (req, res) => {
   try {
-    const lead = await Lead.create(req.body);
-
+    const lead = await Lead.create({
+      ...req.body,
+      createdBy: req.user._id
+    });
     res.status(201).json({
       success: true,
       message: "Lead created successfully",

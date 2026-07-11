@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const protect = require("../middleware/authMiddleware");
+
 const {
   createLead,
   getLeads,
@@ -10,18 +12,18 @@ const {
 } = require("../controllers/leadController");
 
 // Create Lead
-router.post("/", createLead);
+router.post("/", protect, createLead);
 
 // Get All Leads
-router.get("/", getLeads);
+router.get("/", protect, getLeads);
 
 // Get Single Lead
-router.get("/:id", getLead);
+router.get("/:id", protect, getLead);
 
 // Update Lead
-router.put("/:id", updateLead);
+router.put("/:id", protect, updateLead);
 
 // Delete Lead
-router.delete("/:id", deleteLead);
+router.delete("/:id", protect, deleteLead);
 
 module.exports = router;

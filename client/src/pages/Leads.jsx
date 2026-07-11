@@ -1,5 +1,22 @@
-const Leads = () => {
-    return <h1>Leads</h1>;
-};
+import LeadTable from "../components/leads/LeadTable";
+import "../styles/leads.css";
 
-export default Leads;
+export default function Leads() {
+
+  return (
+
+    <div className="leads-page">
+
+      <div className="page-header">
+
+        <h1>Leads Management</h1>
+
+      </div>
+
+      <LeadTable />
+
+    </div>
+
+  );
+
+}

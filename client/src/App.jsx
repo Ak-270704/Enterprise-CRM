@@ -4,6 +4,8 @@ import {
   Navigate
 } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -18,83 +20,89 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <Routes>
+    <>
 
-      {/* Public Routes */}
+      <Routes>
 
-      <Route path="/login" element={<Login />} />
+        {/* Public Routes */}
 
-      <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-      {/* Redirect Home to Dashboard */}
+        <Route path="/register" element={<Register />} />
 
-      <Route
-        path="/"
-        element={<Navigate to="/dashboard" replace />}
+        <Route
+          path="/"
+          element={<Navigate to="/dashboard" replace />}
+        />
+
+        {/* Protected Routes */}
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Dashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/leads"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Leads />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customers"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Customers />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/deals"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Deals />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/activities"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Activities />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        theme="colored"
       />
 
-      {/* Protected Routes */}
-
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/leads"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Leads />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/customers"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Customers />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/deals"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Deals />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/activities"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Activities />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* 404 Page */}
-
-      <Route path="*" element={<NotFound />} />
-
-    </Routes>
+    </>
   );
 }
 
