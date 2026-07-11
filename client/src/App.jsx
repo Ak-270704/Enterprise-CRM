@@ -1,4 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
 
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -16,12 +20,23 @@ function App() {
   return (
     <Routes>
 
+      {/* Public Routes */}
+
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
 
+      {/* Redirect Home to Dashboard */}
+
       <Route
         path="/"
+        element={<Navigate to="/dashboard" replace />}
+      />
+
+      {/* Protected Routes */}
+
+      <Route
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <Layout>
@@ -74,6 +89,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* 404 Page */}
 
       <Route path="*" element={<NotFound />} />
 

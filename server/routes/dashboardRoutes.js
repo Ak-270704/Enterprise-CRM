@@ -8,6 +8,6 @@ const {
   getDashboardStats
 } = require("../controllers/dashboardController");
 
-router.get("/", protect, getDashboardStats);
+router.get("/stats", protect, getDashboardStats);
 
 module.exports = router;

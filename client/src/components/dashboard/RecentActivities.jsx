@@ -6,22 +6,37 @@ export default function RecentActivities() {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
+
+    const fetchActivities = async () => {
+
+      try {
+
+        const res = await API.get("/activities");
+
+        console.log("Activities Response:", res.data);
+
+        setActivities(
+          res.data.activities ||
+          res.data.data ||
+          []
+        );
+
+      } catch (err) {
+
+        console.error(err);
+
+        setActivities([]);
+
+      }
+
+    };
+
     fetchActivities();
+
   }, []);
 
-  const fetchActivities = async () => {
-    try {
-
-      const res = await API.get("/dashboard/stats");
-
-      setActivities(res.data.recentActivities);
-
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
+
     <div
       style={{
         background: "#fff",
@@ -30,17 +45,18 @@ export default function RecentActivities() {
         boxShadow: "0 2px 10px rgba(0,0,0,.08)",
       }}
     >
+
       <h3>Recent Activities</h3>
 
       <ul>
 
-        {activities.length === 0 ? (
+        {activities?.length === 0 ? (
 
           <li>No activities available</li>
 
         ) : (
 
-          activities.map((activity) => (
+          activities?.map((activity) => (
 
             <li
               key={activity._id}
@@ -56,6 +72,9 @@ export default function RecentActivities() {
         )}
 
       </ul>
+
     </div>
+
   );
+
 }

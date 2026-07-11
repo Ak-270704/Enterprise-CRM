@@ -10,21 +10,23 @@ export default function DashboardCards() {
     totalDeals: 0,
     totalActivities: 0,
   });
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
+ useEffect(() => {
 
   const fetchStats = async () => {
     try {
+
       const res = await API.get("/dashboard/stats");
 
-      setStats(res.data.stats);
+      setStats(res.data.data);
 
     } catch (err) {
       console.error(err);
     }
   };
+
+  fetchStats();
+
+}, []);
 
   return (
     <div
