@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
 import API from "../../services/api";
+
 import LeadModal from "./LeadModal";
-
+import SearchBar from "./SearchBar";
+import LeadCard from "./LeadCard";
+import LeadDetailsModal from "./LeadDetailsModal";
 export default function LeadTable() {
-
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [open, setOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
-
-
+const [viewLead, setViewLead] = useState(null);
+const [viewOpen, setViewOpen] = useState(false);
   // Search & Filter States
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -34,7 +36,7 @@ export default function LeadTable() {
   }, []);
 
 
-
+  
   const fetchLeads = async () => {
 
     try {
@@ -60,7 +62,6 @@ export default function LeadTable() {
     }
 
   };
-
 
 
   const deleteLead = async(id)=>{
@@ -425,124 +426,13 @@ export default function LeadTable() {
 
       {/* Search & Filter */}
 
-
-      <div
-
-        style={{
-
-          display:"flex",
-
-          gap:"15px",
-
-          marginBottom:"20px"
-
-        }}
-
-      >
-
-
-        <input
-
-          type="text"
-
-          placeholder="Search by Name, Email, Company, Phone..."
-
-          value={search}
-
-
-          onChange={(e)=>{
-
-            setSearch(e.target.value);
-
-            setCurrentPage(1);
-
-          }}
-
-
-          style={{
-
-            flex:1,
-
-            padding:"10px",
-
-            borderRadius:"8px",
-
-            border:"1px solid #ccc"
-
-          }}
-
-        />
-
-
-
-
-        <select
-
-          value={statusFilter}
-
-
-          onChange={(e)=>{
-
-            setStatusFilter(e.target.value);
-
-            setCurrentPage(1);
-
-          }}
-
-
-          style={{
-
-            padding:"10px",
-
-            borderRadius:"8px",
-
-            border:"1px solid #ccc"
-
-          }}
-
-        >
-
-
-          <option value="All">
-            All Status
-          </option>
-
-          <option value="New">
-            New
-          </option>
-
-          <option value="Contacted">
-            Contacted
-          </option>
-
-          <option value="Qualified">
-            Qualified
-          </option>
-
-          <option value="Proposal Sent">
-            Proposal Sent
-          </option>
-
-          <option value="Negotiation">
-            Negotiation
-          </option>
-
-          <option value="Converted">
-            Converted
-          </option>
-
-          <option value="Lost">
-            Lost
-          </option>
-
-
-        </select>
-
-
-      </div>
-
-
-
+<SearchBar
+  search={search}
+  setSearch={setSearch}
+  statusFilter={statusFilter}
+  setStatusFilter={setStatusFilter}
+  setCurrentPage={setCurrentPage}
+/>
 
       <div className="table-container">
 
@@ -726,194 +616,61 @@ export default function LeadTable() {
 
           <tbody>
 
+{
+currentLeads.length===0
 
-          {
+?
 
-          currentLeads.length===0
+(
 
-          ?
+<tr>
 
-          (
+<td colSpan="7">
+No Leads Found
+</td>
 
-            <tr>
+</tr>
 
-              <td colSpan="7">
+)
 
-                No Leads Found
+:
 
-              </td>
+(
 
-            </tr>
+currentLeads.map((lead)=>(
 
+<LeadCard
+key={lead._id}
+lead={lead}
+getStatusStyle={getStatusStyle}
 
-          )
+onEdit={(lead)=>{
 
-          :
+setSelectedLead(lead);
 
-          (
+setOpen(true);
 
-          currentLeads.map((lead)=>(
+}}
 
+onDelete={deleteLead}
 
-            <tr key={lead._id}>
+onView={(lead)=>{
 
+setViewLead(lead);
 
-              <td>
+setViewOpen(true);
 
-                {lead.firstName} {lead.lastName}
+}}
 
-              </td>
+/>
 
+))
 
+)
 
-              <td>
-                {lead.email}
-              </td>
+}
 
-
-
-              <td>
-                {lead.phone}
-              </td>
-
-
-
-              <td>
-                {lead.company}
-              </td>
-
-
-
-              <td>
-
-
-                <span
-
-                  style={{
-
-                    ...getStatusStyle(lead.status),
-
-                    padding:"6px 12px",
-
-                    borderRadius:"20px",
-
-                    fontWeight:"600",
-
-                    fontSize:"13px",
-
-                    display:"inline-block",
-
-                    minWidth:"110px",
-
-                    textAlign:"center"
-
-                  }}
-
-                >
-
-                  {lead.status}
-
-                </span>
-
-
-              </td>
-
-
-
-
-              <td>
-                {lead.source}
-              </td>
-
-
-
-
-
-              <td>
-
-
-                <button
-
-                  onClick={()=>{
-
-                    setSelectedLead(lead);
-
-                    setOpen(true);
-
-                  }}
-
-
-                  style={{
-
-                    background:"#2563EB",
-
-                    color:"#fff",
-
-                    border:"none",
-
-                    padding:"8px 14px",
-
-                    borderRadius:"6px",
-
-                    cursor:"pointer"
-
-                  }}
-
-                >
-
-                  Edit
-
-                </button>
-
-
-
-
-                <button
-
-                  onClick={()=>deleteLead(lead._id)}
-
-
-                  style={{
-
-                    marginLeft:"10px",
-
-                    background:"#DC2626",
-
-                    color:"#fff",
-
-                    border:"none",
-
-                    padding:"8px 14px",
-
-                    borderRadius:"6px",
-
-                    cursor:"pointer"
-
-                  }}
-
-                >
-
-                  Delete
-
-                </button>
-
-
-
-              </td>
-
-
-            </tr>
-
-
-          ))
-
-
-          )
-
-          }
-
-
-          </tbody>
+</tbody>
 
 
         </table>
@@ -1099,7 +856,14 @@ export default function LeadTable() {
 
 
       />
-
+      <LeadDetailsModal
+      open={viewOpen}
+      lead={viewLead}
+      onClose={()=>{
+        setViewOpen(false);
+        setViewLead(null);
+      }}
+      />
 
 
     </>
