@@ -36,7 +36,7 @@ const [viewOpen, setViewOpen] = useState(false);
   }, []);
 
 
-  
+
   const fetchLeads = async () => {
 
     try {
@@ -598,10 +598,14 @@ const [viewOpen, setViewOpen] = useState(false);
                 Source
               </th>
 
-
-              <th>
-                Actions
-              </th>
+<th
+  style={{
+    width: "18%",
+    minWidth: "250px"
+  }}
+>
+  Actions
+</th>
 
 
 

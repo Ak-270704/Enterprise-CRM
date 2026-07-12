@@ -1,5 +1,5 @@
-const Customers = () => {
-    return <h1>Customers</h1>;
-};
+import CustomerTable from "../components/customers/CustomerTable";
 
-export default Customers;
+export default function Customers() {
+  return <CustomerTable />;
+}
