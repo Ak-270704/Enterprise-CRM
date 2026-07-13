@@ -9,6 +9,11 @@ const {
   deleteCustomer,
 } = require("../controllers/customerController");
 
+const protect = require("../middleware/authMiddleware");
+
+// Protect all customer routes
+router.use(protect);
+
 // Create Customer
 router.post("/", createCustomer);
 

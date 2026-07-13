@@ -3,7 +3,11 @@ const Deal = require("../models/Deal");
 // Create Deal
 exports.createDeal = async (req, res) => {
   try {
-    const deal = await Deal.create(req.body);
+    req.body.createdBy = req.user._id;
+
+req.body.assignedTo = req.body.assignedTo || req.user._id;
+
+const deal = await Deal.create(req.body);
 
     res.status(201).json({
       success: true,
@@ -11,17 +15,22 @@ exports.createDeal = async (req, res) => {
       data: deal,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    console.error(error);
+
+res.status(500).json({
+    success:false,
+    message:"Internal Server Error"
+});
   }
 };
 
 // Get All Deals
 exports.getDeals = async (req, res) => {
   try {
-    const deals = await Deal.find();
+    const deals = await Deal.find()
+  .populate("customer", "companyName contactPerson email")
+  .populate("assignedTo", "name email")
+  .populate("createdBy", "name email");
 
     res.status(200).json({
       success: true,
@@ -29,17 +38,23 @@ exports.getDeals = async (req, res) => {
       data: deals,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    console.error(error);
+
+res.status(500).json({
+    success:false,
+    message:"Internal Server Error"
+});
   }
 };
 
 // Get Single Deal
 exports.getDeal = async (req, res) => {
   try {
-    const deal = await Deal.findById(req.params.id);
+    const deal = await Deal.findById(req.params.id)
+  .populate("customer")
+  .populate("lead")
+  .populate("assignedTo", "name email")
+  .populate("createdBy", "name email");
 
     if (!deal) {
       return res.status(404).json({
@@ -53,10 +68,12 @@ exports.getDeal = async (req, res) => {
       data: deal,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    console.error(error);
+
+res.status(500).json({
+    success:false,
+    message:"Internal Server Error"
+});
   }
 };
 
@@ -85,10 +102,12 @@ exports.updateDeal = async (req, res) => {
       data: deal,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    console.error(error);
+
+res.status(500).json({
+    success:false,
+    message:"Internal Server Error"
+});
   }
 };
 
@@ -109,9 +128,11 @@ exports.deleteDeal = async (req, res) => {
       message: "Deal deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+   console.error(error);
+
+res.status(500).json({
+    success:false,
+    message:"Internal Server Error"
+});
   }
 };
