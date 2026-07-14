@@ -21,7 +21,17 @@ exports.createActivity = async (req, res) => {
 // Get All Activities
 exports.getActivities = async (req, res) => {
   try {
-    const activities = await Activity.find();
+    const activities = await Activity.find()
+
+.populate("lead", "firstName lastName")
+
+.populate("customer", "companyName")
+
+.populate("deal", "title")
+
+.populate("createdBy", "name")
+
+.populate("assignedTo", "name");
 
     res.status(200).json({
       success: true,
@@ -39,7 +49,17 @@ exports.getActivities = async (req, res) => {
 // Get Single Activity
 exports.getActivity = async (req, res) => {
   try {
-    const activity = await Activity.findById(req.params.id);
+    const activity = await Activity.findById(req.params.id)
+
+.populate("lead", "firstName lastName")
+
+.populate("customer", "companyName")
+
+.populate("deal", "title")
+
+.populate("createdBy", "name")
+
+.populate("assignedTo", "name");
 
     if (!activity) {
       return res.status(404).json({

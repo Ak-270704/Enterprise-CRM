@@ -5,7 +5,8 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
-  getProfile
+  getProfile,
+  getUsers
 } = require("../controllers/authController");
 
 const protect = require("../middleware/authMiddleware");
@@ -23,5 +24,8 @@ router.post("/login", loginValidation, loginUser);
 
 // Profile
 router.get("/profile", protect, getProfile);
+
+// Get All Users
+router.get("/users", protect, getUsers);
 
 module.exports = router;
