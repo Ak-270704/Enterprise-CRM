@@ -8,37 +8,34 @@ const { validationResult } = require("express-validator");
 // ===============================
 exports.registerUser = async (req, res) => {
   try {
-    // Validation Check
+
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
         success: false,
-        errors: errors.array()
+        errors: errors.array(),
       });
     }
 
     const { name, email, password, role } = req.body;
 
-    // Check Existing User
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "Email already registered"
+        message: "Email already registered",
       });
     }
 
-    // Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create User
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role
+      role,
     });
 
     res.status(201).json({
@@ -49,15 +46,17 @@ exports.registerUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
 
   } catch (error) {
+
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
+
   }
 };
 
@@ -73,29 +72,30 @@ exports.loginUser = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({
         success: false,
-        errors: errors.array()
+        errors: errors.array(),
       });
     }
 
     const { email, password } = req.body;
 
-    // Find User
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid Email or Password"
+        message: "Invalid Email or Password",
       });
     }
 
-    // Compare Password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: "Invalid Email or Password"
+        message: "Invalid Email or Password",
       });
     }
 
@@ -107,36 +107,97 @@ exports.loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
 
   }
 
 };
+
+// ===============================
+// Verify Admin Credentials
+// ===============================
+exports.verifyAdmin = async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Email or Password",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Email or Password",
+      });
+    }
+
+    if (user.role !== "Admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Only Admin can access Admin Panel",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Admin Verified Successfully",
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+
+};
+
 // ===============================
 // Get Logged In User
 // ===============================
 exports.getProfile = async (req, res) => {
+
   try {
+
     res.status(200).json({
       success: true,
-      user: req.user
+      user: req.user,
     });
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
+
   }
+
 };
+
 // ===============================
 // Get All Users
 // ===============================

@@ -7,7 +7,7 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  Title
+  Title,
 } from "chart.js";
 
 ChartJS.register(
@@ -17,36 +17,81 @@ ChartJS.register(
   Title
 );
 
-export default function LeadChart() {
+export default function LeadChart({
 
-  const data = {
+  data,
+
+}) {
+
+  const chartData = {
 
     labels: [
+
       "New",
+
+      "Contacted",
+
       "Qualified",
-      "Lost"
+
+      "Proposal",
+
+      "Negotiation",
+
+      "Won",
+
+      "Lost",
+
     ],
 
     datasets: [
+
       {
+
         data: [
-          15,
-          9,
-          4
+
+          data?.New || 0,
+
+          data?.Contacted || 0,
+
+          data?.Qualified || 0,
+
+          data?.Proposal || 0,
+
+          data?.Negotiation || 0,
+
+          data?.Won || 0,
+
+          data?.Lost || 0,
+
         ],
 
         backgroundColor: [
-          "#2563EB", // Blue
-          "#10B981", // Green
-          "#EF4444"  // Red
+
+          "#2563EB", // New
+
+          "#0EA5E9", // Contacted
+
+          "#10B981", // Qualified
+
+          "#F59E0B", // Proposal
+
+          "#8B5CF6", // Negotiation
+
+          "#22C55E", // Won
+
+          "#EF4444", // Lost
+
         ],
 
         borderColor: "#FFFFFF",
+
         borderWidth: 3,
 
         hoverOffset: 12,
-      }
-    ]
+
+      },
+
+    ],
 
   };
 
@@ -61,18 +106,27 @@ export default function LeadChart() {
         position: "top",
 
         labels: {
+
           color: "#1E293B",
+
           font: {
-            size: 14,
+
+            size: 13,
+
             weight: "600",
+
           },
-          padding: 20,
+
+          padding: 18,
+
         },
 
       },
 
       title: {
+
         display: false,
+
       },
 
     },
@@ -86,7 +140,8 @@ export default function LeadChart() {
         background: "#FFFFFF",
         padding: "20px",
         borderRadius: "12px",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.08)"
+        boxShadow:
+          "0 4px 15px rgba(0,0,0,.08)",
       }}
     >
 
@@ -94,15 +149,18 @@ export default function LeadChart() {
         style={{
           textAlign: "center",
           marginBottom: "20px",
-          color: "#1E293B"
+          color: "#1E293B",
         }}
       >
         Lead Status
       </h3>
 
       <Pie
-        data={data}
+
+        data={chartData}
+
         options={options}
+
       />
 
     </div>

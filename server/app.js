@@ -10,6 +10,7 @@ const leadRoutes = require("./routes/leadRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const dealRoutes = require("./routes/dealRoutes");
 const activityRoutes = require("./routes/activityRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 // Middleware
@@ -24,6 +25,7 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/deals", dealRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/admin", adminRoutes);
 // Home Route
 app.get("/", (req, res) => {
   res.json({

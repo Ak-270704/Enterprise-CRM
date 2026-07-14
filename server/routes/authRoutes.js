@@ -5,27 +5,60 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
+  verifyAdmin,
   getProfile,
-  getUsers
+  getUsers,
 } = require("../controllers/authController");
 
 const protect = require("../middleware/authMiddleware");
 
 const {
   registerValidation,
-  loginValidation
+  loginValidation,
 } = require("../validations/authValidation");
 
+// ===============================
 // Register
-router.post("/register", registerValidation, registerUser);
+// ===============================
+router.post(
+  "/register",
+  registerValidation,
+  registerUser
+);
 
+// ===============================
 // Login
-router.post("/login", loginValidation, loginUser);
+// ===============================
+router.post(
+  "/login",
+  loginValidation,
+  loginUser
+);
 
+// ===============================
+// Verify Admin
+// ===============================
+router.post(
+  "/verify-admin",
+  verifyAdmin
+);
+
+// ===============================
 // Profile
-router.get("/profile", protect, getProfile);
+// ===============================
+router.get(
+  "/profile",
+  protect,
+  getProfile
+);
 
+// ===============================
 // Get All Users
-router.get("/users", protect, getUsers);
+// ===============================
+router.get(
+  "/users",
+  protect,
+  getUsers
+);
 
 module.exports = router;

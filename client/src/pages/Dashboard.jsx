@@ -1,52 +1,96 @@
+import { useEffect, useState } from "react";
+import API from "../services/api";
+
 import DashboardCards from "../components/dashboard/DashboardCards";
 import SalesChart from "../components/dashboard/SalesChart";
 import LeadChart from "../components/dashboard/LeadChart";
 import RecentActivities from "../components/dashboard/RecentActivities";
 
-export default function Dashboard(){
+export default function Dashboard() {
 
-return(
+  const [stats, setStats] = useState({
 
-<>
-<h1
-style={{
-color:"#ffffff",
-fontSize:"56px",
-marginBottom:"10px"
-}}
->
-Dashboard
-</h1>
+    totalLeads: 0,
 
-<p
-style={{
-color:"#cbd5e1",
-fontSize:"22px",
-marginBottom:"30px"
-}}
->
-Welcome back 👋
-</p>
-<DashboardCards/>
+    totalCustomers: 0,
 
-<div
-style={{
-display:"grid",
-gridTemplateColumns:"2fr 1fr",
-gap:"20px",
-marginBottom:"20px"
-}}
->
+    totalDeals: 0,
 
-<SalesChart/>
+    totalActivities: 0,
 
-<LeadChart/>
+    leadStatusCounts: {},
 
-</div>
+  });
 
-<RecentActivities/>
+  const fetchDashboard = async () => {
 
-</>
+    try {
 
-)
+      const res = await API.get("/dashboard/stats");
+
+      setStats(res.data.data);
+
+    } catch (err) {
+
+      console.error(err);
+
+    }
+
+  };
+
+  useEffect(() => {
+
+    fetchDashboard();
+
+  }, []);
+
+  return (
+
+    <>
+
+      <h1
+        style={{
+          color: "#ffffff",
+          fontSize: "56px",
+          marginBottom: "10px",
+        }}
+      >
+        Dashboard
+      </h1>
+
+      <p
+        style={{
+          color: "#cbd5e1",
+          fontSize: "22px",
+          marginBottom: "30px",
+        }}
+      >
+        Welcome back 👋
+      </p>
+
+      <DashboardCards />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr",
+          gap: "20px",
+          marginBottom: "20px",
+        }}
+      >
+
+        <SalesChart />
+
+        <LeadChart
+          data={stats.leadStatusCounts}
+        />
+
+      </div>
+
+      <RecentActivities />
+
+    </>
+
+  );
+
 }
